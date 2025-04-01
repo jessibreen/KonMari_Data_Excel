@@ -1,303 +1,480 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-	<head>
-		<meta charset="utf-8">
+    <title>Spark Joy in Your Data</title>
 
-		<title>Map Your Community with OpenStreetMap</title>
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css">
 
-		<!-- <meta name="description" content="A framework for easily creating beautiful presentations using HTML"> -->
-		<!-- <meta name="author" content="Hakim El Hattab"> -->
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown>
+  <textarea data-template>
+## Spark Joy in Your Data 
+<span class="fragment">A Marie Kondo–Inspired Guide to Data Cleaning</span>
 
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+Notes:
+Hello everyone, and welcome to Spark Joy in Your Data, CLICK a Marie Kondo–inspired guide to data cleaning. I am Dr. Jessica Breen, I am the Program Director for Geospatial Research Support here in the Library and I run the Geospatial Research Lab downstairs. And I’m excited today to share a little bit of a different take on organizing and tidying up our research datasets. We’ll be borrowing concepts from the KonMari method to make data cleaning more intuitive and, hopefully, more joyful! By the end, you’ll understand how to tidy a dataset so you can have a more reliable analysis, clearer insights, and less frustration. In this session, I’ll be using Excel to demonstrate practical steps, but the underlying principles can apply to any tool or platform.
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+---
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/league.css" id="theme">
-		<!--<link rel="stylesheet" href="lib/css/custom.css" id="theme"> -->
+### Marie Kondo's 6 Rules of Tidying
+<!--<ul>
+  <li class="fragment">Commit Yourself to Tidying Up</li>
+  <li class="fragment">Imagine Your Ideal Lifestyle</li>
+  <li class="fragment">Finish Discarding First</li>
+  <li class="fragment">Tidy by Category, Not by Location</li>
+  <li class="fragment">Everything Has a Home</li>
+  <li class="fragment">Ask Yourself if It Sparks Joy</li>
+</ul> -->
+* Commit Yourself to Tidying Up
+* Imagine Your Ideal Lifestyle
+* Finish Discarding First
+* Tidy by Category, Not by Location
+* Everything Has a Home
+* Ask Yourself if It Sparks Joy
 
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
+Notes:
+If you're unfamiliar with Marie Kondo or the KonMari method, Marie Kondo is a Japanese organizing consultant and best-selling author of 'The Life-Changing Magic of Tidying Up' She also has a Netflix programme based on her books. The KonMari method is her approach to household organization and decluttering that encourages keeping those items that “spark joy” and letting go of those that don't. It's popular not only due to its effectiveness, but also because it places importance on being mindful, introspective and forward-looking. We're going to apply these ideas to data.
+<!--Marie Kondo’s approach can be summed up in these six rules. Today, we're going to adapt them to our data. First, we must commit ourselves to tidying up, make that conscious decision that it’s time to get organized. Then, we imagine our ideal outcome: a dataset that’s easy to work with and free of clutter. From there, we discard what we don’t need, organize by category, following a methodical order, make sure everything is where it belongs,and finally, ask if what remains truly ‘sparks joy.’ Is it actually what we want and need? Don’t worry, we’ll take these one at a time in the context of our data.-->
+---
 
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
+## 0. Backup Your Data
+<span class="fragment">Before you spark joy, spark caution!</span>
+  
+Notes:
+Before we begin tidying, we have to backup our data. This step is super important.
 
-		</script>
+Data cleaning can involve deleting things and changing values. Without a backup, you risk losing important information and the ability to undo changes if something goes wrong. So here’s what I recommend:
+1. Create a Project Folder: Keep everything related to your project—data files, documentation, analysis scripts all organized in one place.
+2. Make a ‘Raw Data’ Subfolder: Store your original, untouched dataset here.
+3. Zip It Up: Put a copy of your raw data into a zipped file. This adds a small layer of security and helps prevent accidental edits.
+4. Label Clearly: Give it a name that indicates it’s the original copy, like RawData_Backup_YYYY-MM-DD.zip.
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+Having a secure backup protects us from making irreversible changes and lets us confidently edit our data. Now, with a safe backup in hand, we can confidently move forward!
 
-	<body>
+---
 
-		<div class="reveal">
+## 1. Commit Yourself to Tidying Up
+<span class="fragment">Embrace a positive mindset.</span>
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section data-background="lib/img/mapcycle.png">
-					<h1 style="color:#393a3c">Map Your Community with OpenStreetMap</h1>
-					<p>
-						<small style="color:gray"><a href="//geography.as.uky.edu/users/jmbr248">Jessica Breen</a> / <a href="//maptime.io/lexington/">MaptimeLEX</a></small>
-					</p>
-				</section>
+Notes:
+The first rule: 'Commit Yourself to Tidying Up'. We can’t effectively do a job that we’re only half-invested in. Decide now that you’re going to transform your spreadsheet into something that’s both usable and meaningful and makes your research analysis easier. This positive tone helps us remember that data cleaning isn’t just a chore; it’s the foundation of any good analysis.
 
-				<section>
-					Thanks to <a href="//twitter.com/insistondoubt">Dan Cockayne</a> and <a href="//uic.academia.edu/AndreaCraft">Andrea Craft</a> 
-				</section>
+---
 
-				<section>
-					<img src="lib/img/logos.png" style="box-shadow: none; border: none; background: none;"><br><br>PhD Candidate, Geography<br>University of Kentucky<br><br>
-					<small><a href="mailto:jessica.breen@uky.edu?Subject=Maptime" target="_top">jessica.breen@uky.edu</a> | <a href="//twitter.com/jessibreen">@jessibreen</a></small>
-				</section>
+## 2. Imagine Your Ideal Lifestyle
+<span class="fragment">Visualize the end state of your data clean, organized, and ready for analysis.</span>
 
-				<section>
-					<h2>Follow along</h2>
-						<p> 
-							<a href="//jessibreen.github.io/community-mapping-OSM/">//jessibreen.github.io/community-mapping-OSM/</a>
-						</p>
-				</section>
+Notes:
+Next, 'Imagine Your Ideal Lifestyle', or in this case, your ideal dataset. Ask yourself: ‘What do I need from this data? How do I want to use it?’ If the end goal is to run statistics, or produce a report, or share insights with colleagues, these are all going to look at little different at the end. I suggest sketching a Column Layout where you outline how many columns you expect, their names, and data types.
 
-				<section data-background="lib/img/neighborhoods.jpg">
-					<h2>Why is Community Mapping important?</h2>
-				</section>
+---
 
-				<section data-background-iframe="//mapknitter.org/embed/juakali">
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<span style="background-color:black">Juakali Market, Kampala, Uganda <br> María Lamadrid /Public Lab</span>
-				</section>
+## 3. Finish Discarding First
 
-				<section>
-					<h2>Maps are Power</h2>
-				</section>
+Notes:
+This is where we start rolling up our sleeves. Marie Kondo says to "Finish Discarding First" before you do any fancy organizing. For data, that means getting rid of the obvious junk, duplicates, or irrelevant columns and rows. Let’s break it down into some smaller steps:
+--
 
-				<section>
-					<p>Maps are a form of power whose use <br>has traditionally been limited to the State.</p>
-				</section>
+### Visual Inspection: 
+#### Identify ‘Cluttered Corners’
+<span class="fragment">Just like scanning a cluttered room, do a quick scan for obvious issues.</span>
 
-				<section>
-					<h2>Tools for Community Mapping</h2>
-					<p>
-						<ul>
-							<li>OpenStreetMap</li>
-							<li>Field Papers</li>
-							<li>Public Lab's Balloon Mapping</li>
-							<li>geojson.io</li>
-						</ul>
-					</p>
-					<p>
-						There are tons of options available...
-					</p>
-				</section>
+Notes:
+First up we'll do a visual inspection. Just like scanning a cluttered room, we do a quick scan of our data for obvious issues. Open your dataset and look for blank rows, text in numeric fields, or anything that screams ‘this does not belong.’
 
-				<section>
-					<h2>What is OpenStreetMap?</h2>
-				</section>
+Inconsistent formatting, random outliers, or incomplete records can all be flagged in this quick overview, but you're not going to fix anything yet, we're just identifing the biggest problems. Write these down. Since we're using Excel, you can create a new tab and put that information there. If you're planning to eventually move this out to a csv, you might want to use a text file to store this information instead, but either way, write it down. We need to document the changes we make to the raw data and having a list of things to fix is a step towards doing that.
 
-				<section>
-					<h2>OpenStreetMap (OSM)</h2>
-					<p>
-						A free, open source, volunteer-generated map of the world that is editable by anyone, anywhere with a computer and a connection to the internet.
-					</p>
-				</section>
+--
 
-				<section >
-					<h2>
-						<a href="//www.mapbox.com/ten-years-openstreetmap/">10 Years of OSM</a>
-					</h2>
-				</section>
+### Categorize: 
+#### Determine What ‘Sparks Joy’
+<span class="fragment">Decide which parts of the data are necessary.</span>
 
-				
+Notes:
+Once you’ve spotted the obvious clutter, 'Categorize' by asking: ‘Does this row or column spark joy?’ In other words, does it have clear value? Do I want this? Do I need this? If you have columns with data you’ll never analyze, or contains irrelevant information, or you don’t have permissions to use it, remove them.
 
-				<section data-background="lib/img/barthmap.png">
-					<h2>What happens to OSM data?</h2>
-				</section>
+In Excel, you can hide or delete columns, but since we already made a backup of the raw data that we can return to if we need to, I suggest deleting them. But whichever choice you make, you do need to keep a note about what you removed and why. That way, if someone asks later, ‘Where did that column go?’ you can explain your decision. 
 
-				<section>
-					<p>
-						<a href="//wiki.openstreetmap.org/wiki/List_of_OSM-based_services">Here's the most recent list of people that OSM knows uses their data...</a>
-					</p>
-				</section>
+--
 
-				<section>
-					<p>
-						Data added to OpenStreetMap has the potential <br>to get used by a lot of people all over the world.
-					</p>
-				</section>
-					
-				<section>
-					<h2> Getting Started with OSM</h2>
-				</section>
+### Thank and Release: 
+#### Removing Duplicates
+<span class="fragment">Eliminate duplicates and irrelevant entries.</span>
 
-				<section>
-					<p> You’re going to need a login.<br>
+Notes:
+Next, 'Thank and Release' any duplicates. If you're familar with Marie Kondo, you know that before discarding any item, she thanks it and releases it with gratitude. This is part of the intentionality of her practice, to understand what an item is to you, what it means, and then letting it go confident that you no longer need it. Getting rid of things in Excel is very simple, there’s a Remove Duplicates feature under the Data tab, but before you click it, be sure you know which columns define a true duplicate.
 
-						Go to: 
-						<a href="//www.openstreetmap.org/user/new">//www.openstreetmap.org/user/new</a><br>
+By discarding what doesn’t truly serve your analysis, you free up space, both literally in your spreadsheet and mentally, so you can focus on what remains.
 
-						Fill out the form, confirm your email, et voilà!
-					</p>
-				</section>
+---
 
-				<section>
-					<h2>Editing the map</h2>
-				</section>
+## 4. Tidy by Category, Not by Location
 
-				<section>
-					<p>
-						We're going to do a little <b>armchair mapping</b>.<br>
-						<em>Don't worry, this has nothing to do with armchairs...</em>
-					</p>
-				</section>
+Notes:
+Marie Kondo also recommends tidying by category rather than by location. In data terms, this translates to tidying similar types of data issues at the same time—like dealing with all your missing values at once, or cleaning up all your date fields at one time—instead of tackling each sheet or each row haphazardly. So now, we're going to through some tools and formulas you can use in Excel to tidy specific data issues.
 
-				<section>
-					<p>
-						<b>Armchair mapping</b> just means tracing items onto the map from aerial imagery without going out to ground-truth them.
-					</p>
-				</section>
+--
 
-				<section>
-					<p>
-						Open the map:
-						<a href="//www.openstreetmap.org">OpenStreetMap.org</a>
-					</p>
-				</section>
+### Folding Neatly: 
+#### Handling Missing Data and Inconsistencies
+<span class="fragment">Make entries uniform and tidy, akin to folding clothes neatly.</span>
 
-				<section data-background="lib/img/selecteditor.jpg">
-					<p style="color:black">
-						<span style="background-color:white">Choose iD Editor from the Edit menu</span>
-					</p>
-				</section>
+Notes:
+In the KonMari method, you fold clothes so they’re uniform size and shape, which makes it easy to store and find them. We re going to do something similar with our data to make sure that it is uniform and findable. 
+--
 
-				<section data-background="lib/img/helpmenu.jpg">
-					<p style="color:black">
-						<span style="background-color:white">From the Help menu on the right, <br>select <b>Start the Walkthrough</b></span>
-					</p>
-				</section>
-					
-				<section>
-					<p> 
-						The walkthrough will show you all the basic information you need to be able to use iD editor.
-					</p>
-				</section>
+### Locate & Replace Missing Data
 
-				<section>
-					<p>
-						There are essentially 3 things you can add to the map:
-						<ul>
-							<li>points</li>
-							<li>lines</li>
-							<li>areas (polygons)</li>
-						</ul>
-					</p>
-				</section>
+Go to Home > Find & Select > Replace
 
-				<section>
-					<p>
-						Points are used to add things like <br>businesses, bus stops, murals. <br>
-						Things that you could stick a pin<br> into the map and say "It's here!"
-					</P>
-				</section>
+Notes:
+We'll start with locating missing and blank data. You'll need to decide how to address them: do you delete rows with too many missing cells? Do you fill them in using an average or the most common value? Or do you just label them as ‘N/A’ or ‘Unknown’? There’s no one-size-fits-all answer; it depends on your analysis goals. But you should always be consistent. 
 
-				<section>
-					<p>
-						Lines are used for roads and trails.
-					</P>
-				</section>
+To fix missing or blank data, we first have to find it and we have multiple options, you could just filter the column and cut and paste the new info in, or you could use Find and Replace.
+1. Find & Replace:  
+   - Go to Home → Find & Select → Replace.  
+   - Enter what you want to find in “Find” and your replacement in “Replace with.”  
+   - Click Find Next to preview each match, then Replace to make the change one by one or Replace All to change all matches at once.
 
-				<section>
-					<p>
-						Areas (polygons) are used for <br>building footprints, parks, lakes, etc. <br>
-						Things that better described by their outline<br> rather than a single point.
-					</p>
-				</section>
+--
 
-				<section>
-					<h2>More help with iD Editor</h2>
-					<p>
-						<a href="//learnosm.org/en/beginner/id-editor/">Learn OSM: The iD Editor</a>
-					</p>
-				</section>
+### Extra Spaces & Hidden Characters
 
-				<section>
-					<h2>Basic Rules of OSM</h2>
-				</section>
+<pre><code data-trim class="excel">
+=TRIM(text) removes extra spaces
+=CLEAN(text) removes non-printable characters
+=TRIM(CLEAN(text)) combines the two!
+</code></pre>
 
-				<section>
-					<p>
-						<ul>
-							<li>Don't add things that aren't real.</li>
-							<li>Don't add things that aren't permanent.</li>
-							<li>Don't copy other maps.</li>
-						</ul>
-					</p>
-				</section>
+Notes: 
+Another common inconsistency in data are cells contain leading, trailing, or extra spaces, or hidden non-printable characters that cause errors.
+You can remove extra spaces with Find & Replace, but there's a faster method. You can use TRIM to remove extra spaces, and CLEAN to remove non-printable characters like line breaks or Unicode issues.
 
-				<section data-background="lib/img/lexbirdeye.jpg">
-					<h2 style="color:black">Next steps...</h2>
-				</section>
+TRIM() is especially helpful if you notice that filters or lookups aren’t matching due to invisible spaces.  
+CLEAN() deals with ASCII control characters that sometimes appear in data pasted from PDFs or web sources.
 
-				<section>
-					<p>
-						<ul>
-						<li>Find other mappers in your area: <a href="//resultmaps.neis-one.org/oooc">Who's Around Me?</a></li>
-						<li>Join a Mapathon: <a href="//wiki.openstreetmap.org/wiki/Mapathon">US Mapathons</a></li>
-						<li>Become a Humanitarian mapper: <a href="//www.missingmaps.org/">Missing Maps</a></li>
-						</ul>	
-					</p>
-				</section>
+--
 
-			</div>
+###  Data Types
+<pre><code data-trim class="excel">
+=VALUE(text) converts text to number  
+=TEXT(value, format_text) converts numbers to formatted text
+</code></pre>
 
-		</div>
+Notes:
+Another thing to do is always check your data types: numeric columns should be numeric, dates should be dates, etc. This ensures your calculations and analyses are accurate. You can do this by selecting the column you want to format at right-clicking (or holding down Control while clicking on a Mac) then selecting Format Cells > Number and you'll get a drop down menu of options. Alternatively, you can use VALUE and TEXT. Having your data in the corect data type allows you to data type specific analysis-like subtracting one date from another.
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+--
 
-		<script>
+### Transforming Text
 
-			// Full list of configuration options available at:
-			// //github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+<pre><code data-trim class="excel">
+=LOWER(text) transforms text to all lowercase  
+=UPPER(text) transforms text to all uppercase
+=PROPER(text) capitalizes 1st letter of each word
+</code></pre>
 
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
+Notes:  
+Now that you've gotten rid of the invisible things, you might need to standardize text case (e.g., convert all entries to uppercase, lowercase, or properly capitalized). Excel has built-in functions for this. LOWER transforms text to all lowercase, while UPPER transforms everything to uppercase. PROPER capitalizes the first letter of each word, as in a Proper name. 
 
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
+--
 
-		</script>
+### Rounding Numeric Data
 
-	</body>
+<pre><code data-trim class="excel">
+=ROUND(number, num_digits) rounds to nearest
+=ROUNDUP(number, num_digits) rounds up
+=ROUNDDOWN(number, num_digits) rounds down
+</code></pre>
+
+Notes:  
+Maybe you have numeric columns with many decimal places, you shoudl have a consistent rounding strategy. For this you can use ROUND, ROUNDUP, or ROUNDDOWN to ensure values conform to your desired precision. Each of these takes a number and rounds it to a specified number of decimal points. ROUND can do up or down depending on the number it is given, the other two will always round in the direction in their name.
+
+Formula:  
+- =ROUND(number, num_digits) – rounds the value to a specified number decimal places. 
+- =ROUNDUP(number, num_digits) – We can force it to round up to a whole number by using a 0. 
+- =ROUNDDOWN(number, num_digits) – We could similarly force this to round down to a whole number like we did above.
+
+-Rounding can be important if you have financial data, percentages, or measurements you want to standardize. So, be mindful of how rounding might affect analyses (e.g., partial vs. whole count).
+
+--
+
+### KonMari Your Columns: 
+#### Splitting & Combining
+<span class="fragment">Give each column a proper place.</span>
+
+Notes:
+Data like addresses and full names are often stored as a single column, but maybe you need them to be held in multiple columns. Or maybe they are in multiple columns and you need them in just one.
+
+--
+
+### Merging & Splitting Data
+
+<div style="text-align: left;">
+To split data, go to Data → Text to Columns.<p>
+To merge using Concatenation: 
+</div>
+       
+<pre><code data-trim class="excel">
+=CONCAT(A2, " ", B2)
+=A2 & " " & B2
+</code></pre>
+
+Notes:
+If you want to combine columns you can use Concatenate or use the "&"" operator to merge two columns. For instance, if you have separate city and state columns you want to combine for easier labeling. The example here will put whatever is in cell A2 then a space and then the contents of B2 into the same cell. To split a column, the simplest method is using the Toolbar: In Excel, go to Data → Text to Columns. This will work if there is a consistent character that marks the splits you want to create -- like a space or comma. If that's not the case, we have other tools. 
+
+--
+
+### Advanced Data Splitting
+
+<pre><code data-trim class="excel">
+  =LEFT(text, [num_chars])
+  =RIGHT(text,[num_chars])
+  =MID(text, start_num, num_chars)
+</code></pre>
+
+Notes:
+Sometimes you have a column that needs to be split in ways that the Text to Columns tools doesn't work for, when that happens you can use tools like LEFT, RIGHT, and MID to locate text at known locations. For instance if you wanted to get just the area code from a phone number or just the extension, LEFT and RIGHT can do that. MID could be used to grad just the exchange codes...the 2nd block of 3 numbers in a US phone number.
+ 
+--
+
+### Really Advanced Data Splitting
+
+<pre><code data-trim class="excel">
+  =FIND(find_text, within_text, [start_num])
+  =SEARCH(find_text,within_text,[start_num])
+  =LEN(text)
+</code></pre>
+
+Notes:
+If those don't work for you, we have a couple more. FIND and SEARCH look like they are the same, but the difference is that FIND is case-sensitive and SEARCH is not. Both of them will help you locate text within text and allow you to specify where they should start in the cell. LEN(gth) will return the number of characters in a cell. These are often combined with other functions to create complex functions. 
+
+--
+
+### Tidy Categories: 
+#### Ensuring Consistent and Correct Values
+<span class="fragment">Eliminate confusion with standardized labels and validated entries.</span>
+
+--
+
+### Using a Reference Table
+
+<pre><code data-trim class="excel">
+=VLOOKUP(lookup_value, table_array, col_index_num ,[range_lookup])
+=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode]) 
+</code></pre>
+
+Notes:
+What do you do if your data is inconsistent? Say you've got a column of states and some people have entered the state abbreviation and some have spelled it out, maybe a few have spelled it wrong or used other abbreviations. This is where LOOKUP tools come in handy. You can build a small reference table mapping all the variations, like “Cali,” “Calif,” and “California,” to a single standard value, such as “CA.” 
+
+In the VLOOKUP function what this is saying is =VLOOKUP( what you want to look up, where you want to look for it, the column number containing the value to return, the kind of match you want: FALSE for exact match, TRUE for approximate).
+
+The XLOOKUP function, which is an updated alternative to VLOOKUP, says =XLOOKUP( what to look up, where to look for it, the array or range to return, a value to return if not found, the kind of match, and the search mode to use). They do very similar things, but XLOOKUP is bidirectional. VLOOKUP only goes from left to right, This means that the column containing the value you look up should always be located to the left of the column containing the return value. If your spreadsheet isn't built this way, then don't use VLOOKUP, try XLOOKUP.
+
+By using a reference table and LOOKUP formula you can pull the correct standardized value into your main dataset. This is especially useful if you have long lists of inconsistent entries.
+
+---
+## 5. Everything has a Home
+<span class="fragment">Keep “like items” together, properly labeled.</span>
+
+Notes:
+Now we come to Step 5: Everything Has a Home. We touched on data hygiene at the start with Rule 0: Back Up Your Data; this step builds on that principle of organization. Just like Marie Kondo advises us to give every physical item a dedicated spot, we want to give every piece of data—and every file—its rightful place.
+ - Dedicated Folders: Organize your files so it’s crystal clear which folder is for raw, untouched data—and which folder is for the clean, transformed files you’re actively editing. Keep backups safely stored away so you never have to worry about losing your original copy.
+- Clear Labels: Within the spreadsheet itself, each column and tab should have a clear, meaningful name. If you have multiple tabs—maybe one for demographic data, another for survey responses—label them in a way that’s instantly understandable.
+- Consistent Formats: For each column, decide on the best format (numeric, date, text) and stick with it, so the ‘home’ for each data type is well-defined.
+- Keep a Readme file: Keeping a readme file with notes about what changes you've made to your data and when along with explanations of variable names (aka a data dictionary) and citation information (aka metadata) is going to make working in a team easier and make your life a lot easier when it comes time to write up your research.
+
+By ensuring that everything has a home, we save ourselves—and anyone else on our team—from the chaos of misfiled or mislabeled data. It’s like returning your dishes to the same cupboard every time; you always know where to find them. With a solid structure in place, our next and final step will be to pause and ask if the dataset truly sparks joy—or in practical terms, if it’s ready to serve our needs.
+
+---
+
+## 6. Ask Yourself if It Sparks Joy
+
+Notes:
+And finally, we arrive at the most famous question: Does it spark joy? For data, that means asking if our dataset is truly serving our needs: is it correct, consistent, and ready for analysis? Let’s break that down further.
+
+--
+
+### Step Back and Appreciate: 
+#### Spot Checking with Pivot Tables and Charts
+<span class="fragment">Confirm the newly organized dataset truly “sparks joy.”</span>
+
+Notes:
+This is a great time to step back and do a quick check. Use a Pivot Table to see if your categories sum up or count up the way you expect. Create a simple bar chart or histogram to check if data distributions look reasonable. If you see weird spikes or negative values where they shouldn’t be, that’s a sign you still have some cleaning to do.
+
+Ask yourself: ‘Does my data look right?’ If you’re unsure, investigate further. The point is to confirm the data now ‘sparks joy’ or in more practical terms, that it’s correct and helpful.
+
+--
+
+### Store with Gratitude: 
+#### Organizing and Documenting
+<span class="fragment">Give your final dataset the place it deserves, just like a neatly organized drawer.</span>
+
+Notes:
+Once you’re satisfied that your data is clean and consistent, store it properly. Save your workbook with a clear name and date, like CleanData_2025-02-20.xlsx. Maintain a data dictionary that explains what each column means, possible values, and any cleaning decisions you made. This is like tidying your drawers so you can find everything easily later.
+
+Also, think about backups and version control especially if you’re collaborating with others. It’s not enough to just tidy your data once; you have to keep it tidy, and that’s easier when you have clear documentation and stable backups.
+
+---
+
+## Putting It into Practice
+<span class="fragment">Let's apply the concepts we’ve learned to a real dataset.</span>
+
+Notes:
+- Introduce a demo dataset that participants will use for hands-on practice.  
+- Emphasize that we’ll repeat the same steps (visual inspection, removal of unneeded columns, duplicates, etc.) in a live demo.
+
+---
+
+## Greet Our Dataset
+
+
+Notes:
+Since you're already clearly committed to cleaning your data, we're going to move on to greeting our dataset. When Marie Kondo begins a tidying project, she takes a moment to greet the home and express appreciation for what it provides. In the same spirit, we’ll ‘greet’ our data. In practical terms, that means understanding its source, its size, and its format before you start making changes. This quick pause helps us see our data as more than just a jumble of rows and columns. Think about where this data came from was it a survey, a data export, or a combination of sources? By approaching our dataset with a sense of gratitude, we set a positive, mindful tone before diving into the cleaning process. 
+
+Also, take a moment to appreciate all the effort that went into collecting this data. People’s time, responses, and resources all helped create these rows and columns. When you approach your dataset with respect, you’re more likely to treat it carefully and effectively.
+
+---
+
+## Envision Our Ideal Dataset
+<span class="fragment">What do we want this dataset to look like?</span>
+
+Notes:
+- Describe the end goal: fewer columns, consistent formatting, no duplicates. 
+- Make a sketch of the columns, field names and data types you need to have at the end. 
+- Remind everyone how we plan to use the data (reports, analysis, etc.).  
+- Encourage them to keep this vision in mind as they clean.
+- The cleaned data should be on a different tab within the file.
+
+---
+
+## Finish Discarding First
+
+--
+
+### Quick Visual Inspection
+<span class="fragment"> Just like scanning a cluttered room, spot big issues first.</span>
+
+Notes:
+- Open the dataset in Excel (or show a screenshot) and do a quick scan.  
+- Discuss obvious problems: blank rows, inconsistent naming, odd data types.
+- Write down what you plan to do on a new tab.
+
+--
+
+### Hiding/Removing Unnecessary Columns
+<span class="fragment"> Decide which columns “spark joy” and which don’t.</span>
+
+Notes:
+- Demonstrate how to hide or remove columns that aren’t needed.  
+- Document which columns you removed and why.  
+- Stress the importance of saving a backup before making major deletions.
+
+--
+
+### Removing Duplicates
+<span class="fragment">“Thank and release” duplicate entries.</span>
+
+Notes:
+- Navigate to Data → Remove Duplicates.  
+- Show how to confirm duplicates using sorting or pivot tables before deletion.  
+- Emphasize version control again (save a backup file).
+
+---
+
+## Tidy by Category
+
+--
+
+### Handling Missing Data and Inconsistencies
+<span class="fragment">Achieve uniform, tidy entries.</span>
+
+Notes:
+- Demonstrate how to find blank cells using Find & Replace.  
+- Use a live example to decide whether to delete rows or fill with “N/A.” 
+- Remove extra spaces and characters with TRIM and CLEAN.
+- Emphasize consistent data types (date, text, number) with VALUE, TEXT, and the Formatting options.
+- Demonstrate how LOWER, UPPER, and PROPER change the capitalization of text
+- Demonstrate how ROUND, ROUNDUP, and ROUNDDOWN impact the numbers they are applied to.
+
+--
+
+### Splitting & Combining Columns
+<span class="fragment">Give every column a proper place, just like folding items neatly in a drawer.</span>
+
+Notes:
+- Show how to Concatenate columns for merging if needed.  
+- Live demo of Text to Columns (e.g., splitting full names).  
+- Demonstrate LEFT, RIGHT, MID
+- Maybe demonstrate FIND, SEARCH, LEN...these were more so that they would know they exist if they need something that the previous tools can't do.
+
+--
+
+### Tidy Categories with Data Validation
+<span class="fragment">Prevent future clutter and keep data consistent.</span>
+
+Notes:
+- Demonstrate creating a data validation list (e.g., valid department names).  
+- Show how VLOOKUP, XLOOKUP, or INDEX/MATCH can standardize categories.  
+
+---
+
+## Checking Our Progress
+<span class="fragment">Verify that the dataset is approaching our “ideal state.”</span>
+
+Notes:
+- Create a Pivot Table or quick chart to spot-check the data.  
+- Look for suspicious outliers or categories that still need cleaning.  
+- Encourage participants to explore the dataset themselves and identify any lingering issues.
+- Save your edits and label the file appropriately.
+---
+
+## Wrap Up
+<span class="fragment">Maintaining Joy and Good Data Habits</span>
+
+Notes:
+That wraps up our journey through the KonMari method for data cleaning! We covered committing to the process, envisioning a tidy outcome, discarding what we don’t need, organizing what remains, putting everything where it belongs, and finally checking if it all ‘sparks joy.’
+
+I hope you now see how these steps can transform a messy spreadsheet into something that truly supports your research and reporting. Thank you for joining me, and I look forward to your questions and any data clutter dilemmas you’d like to share.
+
+---
+
+## Q&A
+Notes: 
+- Invite brief questions or reflections on the hands-on experience.  
+- Invite further discussion on specific data challenges. 
+- Encourage them to apply these concepts on their own datasets and share their success stories or questions.
+
+</textarea>
+</section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+      });
+    </script>
+  </body>
 </html>
